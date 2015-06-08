@@ -1,0 +1,9 @@
+*.o
+.*.o.cmd
+.*.o.d
+.*.ko.cmd
+.tmp_versions
+Module.makers
+Module.symvers
+tags
+
