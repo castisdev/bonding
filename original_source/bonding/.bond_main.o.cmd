@@ -1,21 +1,9 @@
-cmd_/home/bonding_source/tuning_rr/bonding/bond_alb.o := gcc -m32 -Wp,-MD,/home/bonding_source/tuning_rr/bonding/.bond_alb.o.d  -nostdinc -isystem /usr/lib/gcc/i386-redhat-linux/4.1.2/include -D__KERNEL__ -Iinclude  -include include/linux/autoconf.h  -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs -fno-strict-aliasing -fno-common -Wstrict-prototypes -Wundef -Werror-implicit-function-declaration -fno-delete-null-pointer-checks -fwrapv -Os -pipe -msoft-float -fno-builtin-sprintf -fno-builtin-log2 -fno-builtin-puts  -mpreferred-stack-boundary=2  -march=i686 -mtune=generic -mtune=generic -mregparm=3 -ffreestanding -Iinclude/asm-i386/mach-generic -Iinclude/asm-i386/mach-default -fomit-frame-pointer -g  -fno-stack-protector -Wdeclaration-after-statement -Wno-pointer-sign   -DMODULE -D"KBUILD_STR(s)=\#s" -D"KBUILD_BASENAME=KBUILD_STR(bond_alb)"  -D"KBUILD_MODNAME=KBUILD_STR(bonding)" -c -o /home/bonding_source/tuning_rr/bonding/.tmp_bond_alb.o /home/bonding_source/tuning_rr/bonding/bond_alb.c
+cmd_/home/bonding_source/original_source/bonding/bond_main.o := gcc -m32 -Wp,-MD,/home/bonding_source/original_source/bonding/.bond_main.o.d  -nostdinc -isystem /usr/lib/gcc/i386-redhat-linux/4.1.2/include -D__KERNEL__ -Iinclude  -include include/linux/autoconf.h  -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs -fno-strict-aliasing -fno-common -Wstrict-prototypes -Wundef -Werror-implicit-function-declaration -fno-delete-null-pointer-checks -fwrapv -Os -pipe -msoft-float -fno-builtin-sprintf -fno-builtin-log2 -fno-builtin-puts  -mpreferred-stack-boundary=2  -march=i686 -mtune=generic -mtune=generic -mregparm=3 -ffreestanding -Iinclude/asm-i386/mach-generic -Iinclude/asm-i386/mach-default -fomit-frame-pointer -g  -fno-stack-protector -Wdeclaration-after-statement -Wno-pointer-sign   -DMODULE -D"KBUILD_STR(s)=\#s" -D"KBUILD_BASENAME=KBUILD_STR(bond_main)"  -D"KBUILD_MODNAME=KBUILD_STR(bonding)" -c -o /home/bonding_source/original_source/bonding/.tmp_bond_main.o /home/bonding_source/original_source/bonding/bond_main.c
 
-deps_/home/bonding_source/tuning_rr/bonding/bond_alb.o := \
-  /home/bonding_source/tuning_rr/bonding/bond_alb.c \
-  include/linux/skbuff.h \
-    $(wildcard include/config/netfilter.h) \
-    $(wildcard include/config/bridge/netfilter.h) \
-    $(wildcard include/config/vlan/8021q.h) \
-    $(wildcard include/config/vlan/8021q/module.h) \
-    $(wildcard include/config/xen.h) \
-    $(wildcard include/config/nf/conntrack.h) \
-    $(wildcard include/config/nf/conntrack/module.h) \
-    $(wildcard include/config/net/sched.h) \
-    $(wildcard include/config/net/cls/act.h) \
-    $(wildcard include/config/net/dma.h) \
-    $(wildcard include/config/network/secmark.h) \
-    $(wildcard include/config/have/arch/dev/alloc/skb.h) \
-    $(wildcard include/config/highmem.h) \
+deps_/home/bonding_source/original_source/bonding/bond_main.o := \
+  /home/bonding_source/original_source/bonding/bond_main.c \
+    $(wildcard include/config/net/poll/controller.h) \
+    $(wildcard include/config/proc/fs.h) \
   include/linux/kernel.h \
     $(wildcard include/config/preempt/voluntary.h) \
     $(wildcard include/config/debug/spinlock/sleep.h) \
@@ -60,11 +48,45 @@ deps_/home/bonding_source/tuning_rr/bonding/bond_alb.o := \
     $(wildcard include/config/bug.h) \
     $(wildcard include/config/debug/bugverbose.h) \
   include/asm-generic/bug.h \
-  include/linux/time.h \
-  include/linux/seqlock.h \
+  include/linux/module.h \
+    $(wildcard include/config/modules.h) \
+    $(wildcard include/config/modversions.h) \
+    $(wildcard include/config/unused/symbols.h) \
+    $(wildcard include/config/module/unload.h) \
+    $(wildcard include/config/kallsyms.h) \
+  include/linux/sched.h \
+    $(wildcard include/config/detect/softlockup.h) \
+    $(wildcard include/config/detect/hung/task.h) \
+    $(wildcard include/config/split/ptlock/cpus.h) \
+    $(wildcard include/config/mmu/notifier.h) \
+    $(wildcard include/config/keys.h) \
+    $(wildcard include/config/bsd/process/acct.h) \
+    $(wildcard include/config/taskstats.h) \
+    $(wildcard include/config/audit.h) \
+    $(wildcard include/config/inotify/user.h) \
+    $(wildcard include/config/schedstats.h) \
+    $(wildcard include/config/task/delay/acct.h) \
+    $(wildcard include/config/utrace.h) \
+    $(wildcard include/config/rt/mutexes.h) \
+    $(wildcard include/config/debug/mutexes.h) \
+    $(wildcard include/config/trace/irqflags.h) \
+    $(wildcard include/config/lockdep.h) \
+    $(wildcard include/config/task/xacct.h) \
+    $(wildcard include/config/numa.h) \
+    $(wildcard include/config/cpusets.h) \
+    $(wildcard include/config/compat.h) \
+    $(wildcard include/config/ptrace.h) \
+    $(wildcard include/config/x86.h) \
+    $(wildcard include/config/hotplug/cpu.h) \
+    $(wildcard include/config/preempt.h) \
+    $(wildcard include/config/pm.h) \
+  include/linux/auxvec.h \
+  include/asm/auxvec.h \
+  include/asm/param.h \
+    $(wildcard include/config/hz.h) \
+  include/linux/capability.h \
   include/linux/spinlock.h \
     $(wildcard include/config/debug/spinlock.h) \
-    $(wildcard include/config/preempt.h) \
     $(wildcard include/config/debug/lock/alloc.h) \
   include/linux/preempt.h \
     $(wildcard include/config/debug/preempt.h) \
@@ -101,9 +123,7 @@ deps_/home/bonding_source/tuning_rr/bonding/bond_alb.o := \
     $(wildcard include/config/x86/cmpxchg.h) \
     $(wildcard include/config/x86/oostore.h) \
   include/linux/irqflags.h \
-    $(wildcard include/config/trace/irqflags.h) \
     $(wildcard include/config/trace/irqflags/support.h) \
-    $(wildcard include/config/x86.h) \
   include/asm/irqflags.h \
   include/linux/cache.h \
   include/asm/cache.h \
@@ -114,7 +134,6 @@ deps_/home/bonding_source/tuning_rr/bonding/bond_alb.o := \
   include/asm/percpu.h \
   include/asm-generic/percpu.h \
   include/linux/cpumask.h \
-    $(wildcard include/config/hotplug/cpu.h) \
   include/linux/bitmap.h \
   include/linux/string.h \
   include/asm/string.h \
@@ -126,7 +145,6 @@ deps_/home/bonding_source/tuning_rr/bonding/bond_alb.o := \
   include/linux/spinlock_types.h \
   include/asm/spinlock_types.h \
   include/linux/lockdep.h \
-    $(wildcard include/config/lockdep.h) \
     $(wildcard include/config/lock/stat.h) \
     $(wildcard include/config/generic/hardirqs.h) \
     $(wildcard include/config/prove/locking.h) \
@@ -141,44 +159,11 @@ deps_/home/bonding_source/tuning_rr/bonding/bond_alb.o := \
   include/asm-generic/atomic.h \
   include/asm/rwlock.h \
   include/linux/spinlock_api_smp.h \
-  include/linux/mm.h \
-    $(wildcard include/config/sysctl.h) \
-    $(wildcard include/config/mmu.h) \
-    $(wildcard include/config/numa.h) \
-    $(wildcard include/config/stack/growsup.h) \
-    $(wildcard include/config/ia64.h) \
-    $(wildcard include/config/split/ptlock/cpus.h) \
-    $(wildcard include/config/shmem.h) \
-    $(wildcard include/config/have/get/user/pages/fast.h) \
-    $(wildcard include/config/proc/fs.h) \
-    $(wildcard include/config/debug/pagealloc.h) \
-  include/linux/sched.h \
-    $(wildcard include/config/detect/softlockup.h) \
-    $(wildcard include/config/detect/hung/task.h) \
-    $(wildcard include/config/mmu/notifier.h) \
-    $(wildcard include/config/keys.h) \
-    $(wildcard include/config/bsd/process/acct.h) \
-    $(wildcard include/config/taskstats.h) \
-    $(wildcard include/config/audit.h) \
-    $(wildcard include/config/inotify/user.h) \
-    $(wildcard include/config/schedstats.h) \
-    $(wildcard include/config/task/delay/acct.h) \
-    $(wildcard include/config/utrace.h) \
-    $(wildcard include/config/rt/mutexes.h) \
-    $(wildcard include/config/debug/mutexes.h) \
-    $(wildcard include/config/task/xacct.h) \
-    $(wildcard include/config/cpusets.h) \
-    $(wildcard include/config/compat.h) \
-    $(wildcard include/config/ptrace.h) \
-    $(wildcard include/config/pm.h) \
-  include/linux/auxvec.h \
-  include/asm/auxvec.h \
-  include/asm/param.h \
-    $(wildcard include/config/hz.h) \
-  include/linux/capability.h \
   include/asm/current.h \
   include/linux/timex.h \
     $(wildcard include/config/time/interpolation.h) \
+  include/linux/time.h \
+  include/linux/seqlock.h \
   include/asm/timex.h \
     $(wildcard include/config/x86/elan.h) \
   include/asm/tsc.h \
@@ -211,6 +196,7 @@ deps_/home/bonding_source/tuning_rr/bonding/bond_alb.o := \
     $(wildcard include/config/x86/local/apic.h) \
     $(wildcard include/config/x86/io/apic.h) \
   include/asm/fixmap.h \
+    $(wildcard include/config/highmem.h) \
     $(wildcard include/config/x86/visws/apic.h) \
     $(wildcard include/config/x86/f00f/bug.h) \
     $(wildcard include/config/x86/cyclone/timer.h) \
@@ -227,6 +213,7 @@ deps_/home/bonding_source/tuning_rr/bonding/bond_alb.o := \
   include/asm-i386/mach-generic/mach_mpspec.h \
   include/asm/io_apic.h \
     $(wildcard include/config/pci/msi.h) \
+    $(wildcard include/config/xen.h) \
   include/asm/apic.h \
     $(wildcard include/config/x86/good/apic.h) \
   include/linux/pm.h \
@@ -248,7 +235,6 @@ deps_/home/bonding_source/tuning_rr/bonding/bond_alb.o := \
   include/linux/pid.h \
   include/linux/rcupdate.h \
   include/linux/percpu.h \
-    $(wildcard include/config/modules.h) \
   include/linux/slab.h \
     $(wildcard include/config/slob.h) \
     $(wildcard include/config/debug/slab.h) \
@@ -279,6 +265,7 @@ deps_/home/bonding_source/tuning_rr/bonding/bond_alb.o := \
   include/asm-generic/topology.h \
   include/linux/kmalloc_sizes.h \
     $(wildcard include/config/ppc/64k/pages.h) \
+    $(wildcard include/config/mmu.h) \
     $(wildcard include/config/large/allocs.h) \
   include/linux/seccomp.h \
     $(wildcard include/config/seccomp.h) \
@@ -307,107 +294,8 @@ deps_/home/bonding_source/tuning_rr/bonding/bond_alb.o := \
   include/linux/sysfs.h \
     $(wildcard include/config/sysfs.h) \
   include/linux/kref.h \
-  include/linux/prio_tree.h \
-  include/linux/fs.h \
-    $(wildcard include/config/dnotify.h) \
-    $(wildcard include/config/quota.h) \
-    $(wildcard include/config/inotify.h) \
-    $(wildcard include/config/epoll.h) \
-    $(wildcard include/config/auditsyscall.h) \
-    $(wildcard include/config/fs/xip.h) \
-    $(wildcard include/config/migration.h) \
-    $(wildcard include/config/security.h) \
-  include/linux/limits.h \
-  include/linux/ioctl.h \
-  include/asm/ioctl.h \
-  include/asm-generic/ioctl.h \
-  include/linux/kdev_t.h \
-  include/linux/dcache.h \
-    $(wildcard include/config/profiling.h) \
   include/linux/stat.h \
   include/asm/stat.h \
-  include/linux/radix-tree.h \
-  include/linux/fiemap.h \
-  include/linux/percpu-rwsem.h \
-  include/linux/delay.h \
-  include/asm/delay.h \
-  include/linux/hardirq.h \
-    $(wildcard include/config/preempt/bkl.h) \
-    $(wildcard include/config/virt/cpu/accounting.h) \
-  include/linux/smp_lock.h \
-    $(wildcard include/config/lock/kernel.h) \
-  include/asm/hardirq.h \
-  include/linux/irq.h \
-    $(wildcard include/config/s390.h) \
-    $(wildcard include/config/irq/per/cpu.h) \
-    $(wildcard include/config/irq/release/method.h) \
-    $(wildcard include/config/generic/pending/irq.h) \
-    $(wildcard include/config/irqbalance.h) \
-    $(wildcard include/config/auto/irq/affinity.h) \
-  include/linux/irqreturn.h \
-  include/asm/irq.h \
-  include/asm-i386/mach-default/irq_vectors.h \
-  include/asm-i386/mach-default/irq_vectors_limits.h \
-  include/asm/hw_irq.h \
-  include/linux/profile.h \
-  include/asm/sections.h \
-  include/asm-generic/sections.h \
-  include/linux/irq_cpustat.h \
-  include/asm/local.h \
-  include/linux/quota.h \
-  include/linux/dqblk_xfs.h \
-  include/linux/dqblk_v1.h \
-  include/linux/dqblk_v2.h \
-  include/linux/nfs_fs_i.h \
-  include/linux/nfs.h \
-  include/linux/sunrpc/msg_prot.h \
-  include/linux/fcntl.h \
-  include/asm/fcntl.h \
-  include/asm-generic/fcntl.h \
-    $(wildcard include/config/64bit.h) \
-  include/linux/err.h \
-  include/linux/backing-dev.h \
-  include/asm/pgtable.h \
-    $(wildcard include/config/highpte.h) \
-  include/asm/pgtable-2level-defs.h \
-  include/asm/pgtable-2level.h \
-  include/asm-generic/pgtable-nopmd.h \
-  include/asm-generic/pgtable-nopud.h \
-  include/asm-generic/pgtable.h \
-  include/linux/page-flags.h \
-    $(wildcard include/config/swap.h) \
-    $(wildcard include/config/x86/64.h) \
-  include/linux/vmstat.h \
-    $(wildcard include/config/vm/event/counters.h) \
-    $(wildcard include/config/dma/is/normal.h) \
-  include/linux/highmem.h \
-  include/asm/cacheflush.h \
-    $(wildcard include/config/debug/rodata.h) \
-  include/asm/highmem.h \
-  include/linux/interrupt.h \
-    $(wildcard include/config/have/irq/ignore/unhandled.h) \
-    $(wildcard include/config/generic/irq/probe.h) \
-  include/trace/irq.h \
-  include/linux/tracepoint.h \
-    $(wildcard include/config/tracepoints.h) \
-  include/asm/tlbflush.h \
-    $(wildcard include/config/x86/invlpg.h) \
-  include/linux/poll.h \
-  include/asm/poll.h \
-  include/asm/uaccess.h \
-    $(wildcard include/config/x86/intel/usercopy.h) \
-    $(wildcard include/config/x86/wp/works/ok.h) \
-  include/linux/net.h \
-  include/asm/socket.h \
-  include/asm/sockios.h \
-  include/linux/sysctl.h \
-    $(wildcard include/config/tux/debug/blocking.h) \
-  include/linux/textsearch.h \
-  include/linux/module.h \
-    $(wildcard include/config/modversions.h) \
-    $(wildcard include/config/unused/symbols.h) \
-    $(wildcard include/config/module/unload.h) \
-    $(wildcard include/config/kallsyms.h) \
   include/linux/kmod.h \
     $(wildcard include/config/kmod.h) \
   include/linux/elf.h \
@@ -419,8 +307,11 @@ deps_/home/bonding_source/tuning_rr/bonding/bond_alb.o := \
   include/asm/desc.h \
   include/asm/ldt.h \
   include/linux/moduleparam.h \
+  include/linux/tracepoint.h \
+    $(wildcard include/config/tracepoints.h) \
   include/linux/marker.h \
     $(wildcard include/config/markers.h) \
+  include/asm/local.h \
   include/asm/module.h \
     $(wildcard include/config/m486.h) \
     $(wildcard include/config/m586.h) \
@@ -442,6 +333,131 @@ deps_/home/bonding_source/tuning_rr/bonding/bond_alb.o := \
     $(wildcard include/config/mgeodegx1.h) \
     $(wildcard include/config/mgeode/lx.h) \
     $(wildcard include/config/regparm.h) \
+  include/linux/fcntl.h \
+  include/asm/fcntl.h \
+  include/asm-generic/fcntl.h \
+    $(wildcard include/config/64bit.h) \
+  include/linux/interrupt.h \
+    $(wildcard include/config/have/irq/ignore/unhandled.h) \
+    $(wildcard include/config/generic/irq/probe.h) \
+  include/linux/irqreturn.h \
+  include/linux/hardirq.h \
+    $(wildcard include/config/preempt/bkl.h) \
+    $(wildcard include/config/virt/cpu/accounting.h) \
+  include/linux/smp_lock.h \
+    $(wildcard include/config/lock/kernel.h) \
+  include/asm/hardirq.h \
+  include/linux/irq.h \
+    $(wildcard include/config/s390.h) \
+    $(wildcard include/config/irq/per/cpu.h) \
+    $(wildcard include/config/irq/release/method.h) \
+    $(wildcard include/config/generic/pending/irq.h) \
+    $(wildcard include/config/irqbalance.h) \
+    $(wildcard include/config/auto/irq/affinity.h) \
+  include/asm/irq.h \
+  include/asm-i386/mach-default/irq_vectors.h \
+  include/asm-i386/mach-default/irq_vectors_limits.h \
+  include/asm/hw_irq.h \
+  include/linux/profile.h \
+    $(wildcard include/config/profiling.h) \
+  include/asm/sections.h \
+  include/asm-generic/sections.h \
+  include/linux/irq_cpustat.h \
+  include/trace/irq.h \
+  include/linux/ptrace.h \
+  include/asm/tracehook.h \
+  include/linux/tracehook.h \
+  include/linux/uaccess.h \
+  include/asm/uaccess.h \
+    $(wildcard include/config/x86/intel/usercopy.h) \
+    $(wildcard include/config/x86/wp/works/ok.h) \
+  include/linux/utrace.h \
+  include/linux/ioport.h \
+  include/linux/in.h \
+  include/linux/socket.h \
+  include/asm/socket.h \
+  include/asm/sockios.h \
+  include/linux/sockios.h \
+  include/linux/uio.h \
+  include/net/ip.h \
+    $(wildcard include/config/inet.h) \
+    $(wildcard include/config/ipv6.h) \
+    $(wildcard include/config/ipv6/module.h) \
+  include/linux/ip.h \
+  include/linux/skbuff.h \
+    $(wildcard include/config/netfilter.h) \
+    $(wildcard include/config/bridge/netfilter.h) \
+    $(wildcard include/config/vlan/8021q.h) \
+    $(wildcard include/config/vlan/8021q/module.h) \
+    $(wildcard include/config/nf/conntrack.h) \
+    $(wildcard include/config/nf/conntrack/module.h) \
+    $(wildcard include/config/net/sched.h) \
+    $(wildcard include/config/net/cls/act.h) \
+    $(wildcard include/config/net/dma.h) \
+    $(wildcard include/config/network/secmark.h) \
+    $(wildcard include/config/have/arch/dev/alloc/skb.h) \
+  include/linux/mm.h \
+    $(wildcard include/config/sysctl.h) \
+    $(wildcard include/config/stack/growsup.h) \
+    $(wildcard include/config/ia64.h) \
+    $(wildcard include/config/shmem.h) \
+    $(wildcard include/config/have/get/user/pages/fast.h) \
+    $(wildcard include/config/debug/pagealloc.h) \
+  include/linux/prio_tree.h \
+  include/linux/fs.h \
+    $(wildcard include/config/dnotify.h) \
+    $(wildcard include/config/quota.h) \
+    $(wildcard include/config/inotify.h) \
+    $(wildcard include/config/epoll.h) \
+    $(wildcard include/config/auditsyscall.h) \
+    $(wildcard include/config/fs/xip.h) \
+    $(wildcard include/config/migration.h) \
+    $(wildcard include/config/security.h) \
+  include/linux/limits.h \
+  include/linux/ioctl.h \
+  include/asm/ioctl.h \
+  include/asm-generic/ioctl.h \
+  include/linux/kdev_t.h \
+  include/linux/dcache.h \
+  include/linux/radix-tree.h \
+  include/linux/fiemap.h \
+  include/linux/percpu-rwsem.h \
+  include/linux/delay.h \
+  include/asm/delay.h \
+  include/linux/quota.h \
+  include/linux/dqblk_xfs.h \
+  include/linux/dqblk_v1.h \
+  include/linux/dqblk_v2.h \
+  include/linux/nfs_fs_i.h \
+  include/linux/nfs.h \
+  include/linux/sunrpc/msg_prot.h \
+  include/linux/err.h \
+  include/linux/backing-dev.h \
+  include/asm/pgtable.h \
+    $(wildcard include/config/highpte.h) \
+  include/asm/pgtable-2level-defs.h \
+  include/asm/pgtable-2level.h \
+  include/asm-generic/pgtable-nopmd.h \
+  include/asm-generic/pgtable-nopud.h \
+  include/asm-generic/pgtable.h \
+  include/linux/page-flags.h \
+    $(wildcard include/config/swap.h) \
+    $(wildcard include/config/x86/64.h) \
+  include/linux/vmstat.h \
+    $(wildcard include/config/vm/event/counters.h) \
+    $(wildcard include/config/dma/is/normal.h) \
+  include/linux/highmem.h \
+  include/asm/cacheflush.h \
+    $(wildcard include/config/debug/rodata.h) \
+  include/asm/highmem.h \
+  include/asm/tlbflush.h \
+    $(wildcard include/config/x86/invlpg.h) \
+  include/linux/poll.h \
+  include/asm/poll.h \
+  include/linux/net.h \
+  include/linux/sysctl.h \
+    $(wildcard include/config/tux/debug/blocking.h) \
+  include/linux/textsearch.h \
   include/net/checksum.h \
   include/asm/checksum.h \
   include/linux/in6.h \
@@ -450,9 +466,7 @@ deps_/home/bonding_source/tuning_rr/bonding/bond_alb.o := \
     $(wildcard include/config/dma/engine.h) \
   include/linux/device.h \
     $(wildcard include/config/debug/devres.h) \
-  include/linux/ioport.h \
   include/linux/klist.h \
-  include/linux/uio.h \
   include/linux/dma-mapping.h \
     $(wildcard include/config/have/dma/attrs.h) \
   include/asm/dma-mapping.h \
@@ -461,40 +475,24 @@ deps_/home/bonding_source/tuning_rr/bonding/bond_alb.o := \
   include/asm-generic/iomap.h \
   include/linux/vmalloc.h \
   include/asm/scatterlist.h \
+  include/net/inet_sock.h \
+  include/net/flow.h \
+  include/net/sock.h \
+    $(wildcard include/config/security/network.h) \
+    $(wildcard include/config/netdebug.h) \
+    $(wildcard include/config/net.h) \
   include/linux/netdevice.h \
     $(wildcard include/config/ax25.h) \
     $(wildcard include/config/ax25/module.h) \
     $(wildcard include/config/tr.h) \
     $(wildcard include/config/net/ipip.h) \
-    $(wildcard include/config/ipv6.h) \
-    $(wildcard include/config/ipv6/module.h) \
     $(wildcard include/config/netpoll.h) \
-    $(wildcard include/config/net/poll/controller.h) \
     $(wildcard include/config/net/divert.h) \
     $(wildcard include/config/netpoll/trap.h) \
   include/linux/if.h \
-  include/linux/socket.h \
-  include/linux/sockios.h \
   include/linux/hdlc/ioctl.h \
   include/linux/if_ether.h \
   include/linux/if_packet.h \
-  include/linux/etherdevice.h \
-  include/linux/random.h \
-    $(wildcard include/config/arch/random.h) \
-  include/asm/archrandom.h \
-  include/linux/pkt_sched.h \
-  include/linux/ip.h \
-  include/linux/ipv6.h \
-    $(wildcard include/config/ipv6/privacy.h) \
-    $(wildcard include/config/ipv6/router/pref.h) \
-    $(wildcard include/config/ipv6/route/info.h) \
-    $(wildcard include/config/ipv6/subtrees.h) \
-  include/linux/icmpv6.h \
-  include/linux/tcp.h \
-  include/net/sock.h \
-    $(wildcard include/config/security/network.h) \
-    $(wildcard include/config/netdebug.h) \
-    $(wildcard include/config/net.h) \
   include/linux/security.h \
     $(wildcard include/config/security/network/xfrm.h) \
   include/linux/binfmts.h \
@@ -505,7 +503,6 @@ deps_/home/bonding_source/tuning_rr/bonding/bond_alb.o := \
   include/asm/msgbuf.h \
   include/linux/key.h \
   include/linux/xfrm.h \
-  include/net/flow.h \
   include/linux/filter.h \
   include/net/dst.h \
     $(wildcard include/config/net/cls/route.h) \
@@ -515,34 +512,50 @@ deps_/home/bonding_source/tuning_rr/bonding/bond_alb.o := \
   include/linux/if_addr.h \
   include/net/neighbour.h \
   include/linux/seq_file.h \
-  include/net/inet_connection_sock.h \
-  include/net/inet_sock.h \
   include/net/request_sock.h \
+  include/net/snmp.h \
+  include/linux/snmp.h \
+  include/linux/ipv6.h \
+    $(wildcard include/config/ipv6/privacy.h) \
+    $(wildcard include/config/ipv6/router/pref.h) \
+    $(wildcard include/config/ipv6/route/info.h) \
+    $(wildcard include/config/ipv6/subtrees.h) \
+  include/linux/icmpv6.h \
+  include/linux/tcp.h \
+  include/net/inet_connection_sock.h \
   include/net/inet_timewait_sock.h \
   include/net/tcp_states.h \
   include/net/timewait_sock.h \
   include/linux/udp.h \
   include/net/if_inet6.h \
-  include/net/snmp.h \
-  include/linux/snmp.h \
-  include/linux/if_arp.h \
-  include/linux/if_bonding.h \
-  include/linux/if_vlan.h \
-  include/linux/in.h \
-  include/net/ipx.h \
-    $(wildcard include/config/ipx/intern.h) \
-  include/net/datalink.h \
-  include/linux/ipx.h \
-  include/net/arp.h \
-  include/net/ipv6.h \
-  include/net/ndisc.h \
-  /home/bonding_source/tuning_rr/bonding/bonding.h \
+  include/linux/ctype.h \
+  include/linux/inet.h \
+  include/asm/dma.h \
+    $(wildcard include/config/pci.h) \
+  include/linux/netpoll.h \
+  include/linux/inetdevice.h \
+  include/linux/igmp.h \
+  include/linux/etherdevice.h \
+  include/linux/random.h \
+    $(wildcard include/config/arch/random.h) \
+  include/asm/archrandom.h \
   include/linux/proc_fs.h \
     $(wildcard include/config/proc/devicetree.h) \
     $(wildcard include/config/proc/kcore.h) \
-  /home/bonding_source/tuning_rr/bonding/bond_3ad.h \
-  /home/bonding_source/tuning_rr/bonding/bond_alb.h \
+  include/net/arp.h \
+  include/linux/if_arp.h \
+  include/linux/mii.h \
+  include/linux/ethtool.h \
+  include/linux/if_vlan.h \
+  include/linux/if_bonding.h \
+  include/net/route.h \
+  include/net/inetpeer.h \
+  include/linux/in_route.h \
+  include/linux/route.h \
+  /home/bonding_source/original_source/bonding/bonding.h \
+  /home/bonding_source/original_source/bonding/bond_3ad.h \
+  /home/bonding_source/original_source/bonding/bond_alb.h \
 
-/home/bonding_source/tuning_rr/bonding/bond_alb.o: $(deps_/home/bonding_source/tuning_rr/bonding/bond_alb.o)
+/home/bonding_source/original_source/bonding/bond_main.o: $(deps_/home/bonding_source/original_source/bonding/bond_main.o)
 
-$(deps_/home/bonding_source/tuning_rr/bonding/bond_alb.o):
+$(deps_/home/bonding_source/original_source/bonding/bond_main.o):

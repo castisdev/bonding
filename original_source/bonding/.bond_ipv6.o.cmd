@@ -1,18 +1,56 @@
-cmd_/home/bonding_source/tuning_rr/bonding/bond_alb.o := gcc -m32 -Wp,-MD,/home/bonding_source/tuning_rr/bonding/.bond_alb.o.d  -nostdinc -isystem /usr/lib/gcc/i386-redhat-linux/4.1.2/include -D__KERNEL__ -Iinclude  -include include/linux/autoconf.h  -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs -fno-strict-aliasing -fno-common -Wstrict-prototypes -Wundef -Werror-implicit-function-declaration -fno-delete-null-pointer-checks -fwrapv -Os -pipe -msoft-float -fno-builtin-sprintf -fno-builtin-log2 -fno-builtin-puts  -mpreferred-stack-boundary=2  -march=i686 -mtune=generic -mtune=generic -mregparm=3 -ffreestanding -Iinclude/asm-i386/mach-generic -Iinclude/asm-i386/mach-default -fomit-frame-pointer -g  -fno-stack-protector -Wdeclaration-after-statement -Wno-pointer-sign   -DMODULE -D"KBUILD_STR(s)=\#s" -D"KBUILD_BASENAME=KBUILD_STR(bond_alb)"  -D"KBUILD_MODNAME=KBUILD_STR(bonding)" -c -o /home/bonding_source/tuning_rr/bonding/.tmp_bond_alb.o /home/bonding_source/tuning_rr/bonding/bond_alb.c
+cmd_/home/bonding_source/original_source/bonding/bond_ipv6.o := gcc -m32 -Wp,-MD,/home/bonding_source/original_source/bonding/.bond_ipv6.o.d  -nostdinc -isystem /usr/lib/gcc/i386-redhat-linux/4.1.2/include -D__KERNEL__ -Iinclude  -include include/linux/autoconf.h  -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs -fno-strict-aliasing -fno-common -Wstrict-prototypes -Wundef -Werror-implicit-function-declaration -fno-delete-null-pointer-checks -fwrapv -Os -pipe -msoft-float -fno-builtin-sprintf -fno-builtin-log2 -fno-builtin-puts  -mpreferred-stack-boundary=2  -march=i686 -mtune=generic -mtune=generic -mregparm=3 -ffreestanding -Iinclude/asm-i386/mach-generic -Iinclude/asm-i386/mach-default -fomit-frame-pointer -g  -fno-stack-protector -Wdeclaration-after-statement -Wno-pointer-sign   -DMODULE -D"KBUILD_STR(s)=\#s" -D"KBUILD_BASENAME=KBUILD_STR(bond_ipv6)"  -D"KBUILD_MODNAME=KBUILD_STR(bonding)" -c -o /home/bonding_source/original_source/bonding/.tmp_bond_ipv6.o /home/bonding_source/original_source/bonding/bond_ipv6.c
 
-deps_/home/bonding_source/tuning_rr/bonding/bond_alb.o := \
-  /home/bonding_source/tuning_rr/bonding/bond_alb.c \
+deps_/home/bonding_source/original_source/bonding/bond_ipv6.o := \
+  /home/bonding_source/original_source/bonding/bond_ipv6.c \
+  include/linux/types.h \
+    $(wildcard include/config/uid16.h) \
+    $(wildcard include/config/resources/64bit.h) \
+  include/linux/posix_types.h \
+  include/linux/stddef.h \
+  include/linux/compiler.h \
+  include/linux/compiler-gcc4.h \
+    $(wildcard include/config/forced/inlining.h) \
+  include/linux/compiler-gcc.h \
+  include/asm/posix_types.h \
+  include/asm/types.h \
+    $(wildcard include/config/highmem64g.h) \
+    $(wildcard include/config/lbd.h) \
+    $(wildcard include/config/lsf.h) \
+  include/linux/if_vlan.h \
+    $(wildcard include/config/vlan/8021q.h) \
+    $(wildcard include/config/vlan/8021q/module.h) \
+  include/linux/netdevice.h \
+    $(wildcard include/config/ax25.h) \
+    $(wildcard include/config/ax25/module.h) \
+    $(wildcard include/config/tr.h) \
+    $(wildcard include/config/net/ipip.h) \
+    $(wildcard include/config/ipv6.h) \
+    $(wildcard include/config/ipv6/module.h) \
+    $(wildcard include/config/netpoll.h) \
+    $(wildcard include/config/net/poll/controller.h) \
+    $(wildcard include/config/net/divert.h) \
+    $(wildcard include/config/netpoll/trap.h) \
+    $(wildcard include/config/net/dma.h) \
+    $(wildcard include/config/bug.h) \
+    $(wildcard include/config/proc/fs.h) \
+  include/linux/if.h \
+  include/linux/socket.h \
+    $(wildcard include/config/compat.h) \
+  include/asm/socket.h \
+  include/asm/sockios.h \
+  include/linux/sockios.h \
+  include/linux/uio.h \
+  include/linux/hdlc/ioctl.h \
+  include/linux/if_ether.h \
+    $(wildcard include/config/sysctl.h) \
   include/linux/skbuff.h \
     $(wildcard include/config/netfilter.h) \
     $(wildcard include/config/bridge/netfilter.h) \
-    $(wildcard include/config/vlan/8021q.h) \
-    $(wildcard include/config/vlan/8021q/module.h) \
     $(wildcard include/config/xen.h) \
     $(wildcard include/config/nf/conntrack.h) \
     $(wildcard include/config/nf/conntrack/module.h) \
     $(wildcard include/config/net/sched.h) \
     $(wildcard include/config/net/cls/act.h) \
-    $(wildcard include/config/net/dma.h) \
     $(wildcard include/config/network/secmark.h) \
     $(wildcard include/config/have/arch/dev/alloc/skb.h) \
     $(wildcard include/config/highmem.h) \
@@ -24,20 +62,6 @@ deps_/home/bonding_source/tuning_rr/bonding/bond_alb.o := \
   include/linux/linkage.h \
   include/asm/linkage.h \
     $(wildcard include/config/x86/alignment/16.h) \
-  include/linux/stddef.h \
-  include/linux/compiler.h \
-  include/linux/compiler-gcc4.h \
-    $(wildcard include/config/forced/inlining.h) \
-  include/linux/compiler-gcc.h \
-  include/linux/types.h \
-    $(wildcard include/config/uid16.h) \
-    $(wildcard include/config/resources/64bit.h) \
-  include/linux/posix_types.h \
-  include/asm/posix_types.h \
-  include/asm/types.h \
-    $(wildcard include/config/highmem64g.h) \
-    $(wildcard include/config/lbd.h) \
-    $(wildcard include/config/lsf.h) \
   include/linux/bitops.h \
   include/asm/bitops.h \
   include/asm/alternative.h \
@@ -57,7 +81,6 @@ deps_/home/bonding_source/tuning_rr/bonding/bond_alb.o := \
     $(wildcard include/config/arch/has/ilog2/u32.h) \
     $(wildcard include/config/arch/has/ilog2/u64.h) \
   include/asm/bug.h \
-    $(wildcard include/config/bug.h) \
     $(wildcard include/config/debug/bugverbose.h) \
   include/asm-generic/bug.h \
   include/linux/time.h \
@@ -142,7 +165,6 @@ deps_/home/bonding_source/tuning_rr/bonding/bond_alb.o := \
   include/asm/rwlock.h \
   include/linux/spinlock_api_smp.h \
   include/linux/mm.h \
-    $(wildcard include/config/sysctl.h) \
     $(wildcard include/config/mmu.h) \
     $(wildcard include/config/numa.h) \
     $(wildcard include/config/stack/growsup.h) \
@@ -150,7 +172,6 @@ deps_/home/bonding_source/tuning_rr/bonding/bond_alb.o := \
     $(wildcard include/config/split/ptlock/cpus.h) \
     $(wildcard include/config/shmem.h) \
     $(wildcard include/config/have/get/user/pages/fast.h) \
-    $(wildcard include/config/proc/fs.h) \
     $(wildcard include/config/debug/pagealloc.h) \
   include/linux/sched.h \
     $(wildcard include/config/detect/softlockup.h) \
@@ -168,7 +189,6 @@ deps_/home/bonding_source/tuning_rr/bonding/bond_alb.o := \
     $(wildcard include/config/debug/mutexes.h) \
     $(wildcard include/config/task/xacct.h) \
     $(wildcard include/config/cpusets.h) \
-    $(wildcard include/config/compat.h) \
     $(wildcard include/config/ptrace.h) \
     $(wildcard include/config/pm.h) \
   include/linux/auxvec.h \
@@ -398,8 +418,6 @@ deps_/home/bonding_source/tuning_rr/bonding/bond_alb.o := \
     $(wildcard include/config/x86/intel/usercopy.h) \
     $(wildcard include/config/x86/wp/works/ok.h) \
   include/linux/net.h \
-  include/asm/socket.h \
-  include/asm/sockios.h \
   include/linux/sysctl.h \
     $(wildcard include/config/tux/debug/blocking.h) \
   include/linux/textsearch.h \
@@ -452,7 +470,6 @@ deps_/home/bonding_source/tuning_rr/bonding/bond_alb.o := \
     $(wildcard include/config/debug/devres.h) \
   include/linux/ioport.h \
   include/linux/klist.h \
-  include/linux/uio.h \
   include/linux/dma-mapping.h \
     $(wildcard include/config/have/dma/attrs.h) \
   include/asm/dma-mapping.h \
@@ -461,29 +478,12 @@ deps_/home/bonding_source/tuning_rr/bonding/bond_alb.o := \
   include/asm-generic/iomap.h \
   include/linux/vmalloc.h \
   include/asm/scatterlist.h \
-  include/linux/netdevice.h \
-    $(wildcard include/config/ax25.h) \
-    $(wildcard include/config/ax25/module.h) \
-    $(wildcard include/config/tr.h) \
-    $(wildcard include/config/net/ipip.h) \
-    $(wildcard include/config/ipv6.h) \
-    $(wildcard include/config/ipv6/module.h) \
-    $(wildcard include/config/netpoll.h) \
-    $(wildcard include/config/net/poll/controller.h) \
-    $(wildcard include/config/net/divert.h) \
-    $(wildcard include/config/netpoll/trap.h) \
-  include/linux/if.h \
-  include/linux/socket.h \
-  include/linux/sockios.h \
-  include/linux/hdlc/ioctl.h \
-  include/linux/if_ether.h \
   include/linux/if_packet.h \
   include/linux/etherdevice.h \
   include/linux/random.h \
     $(wildcard include/config/arch/random.h) \
   include/asm/archrandom.h \
-  include/linux/pkt_sched.h \
-  include/linux/ip.h \
+  include/net/ipv6.h \
   include/linux/ipv6.h \
     $(wildcard include/config/ipv6/privacy.h) \
     $(wildcard include/config/ipv6/router/pref.h) \
@@ -525,24 +525,16 @@ deps_/home/bonding_source/tuning_rr/bonding/bond_alb.o := \
   include/net/if_inet6.h \
   include/net/snmp.h \
   include/linux/snmp.h \
-  include/linux/if_arp.h \
-  include/linux/if_bonding.h \
-  include/linux/if_vlan.h \
-  include/linux/in.h \
-  include/net/ipx.h \
-    $(wildcard include/config/ipx/intern.h) \
-  include/net/datalink.h \
-  include/linux/ipx.h \
-  include/net/arp.h \
-  include/net/ipv6.h \
   include/net/ndisc.h \
-  /home/bonding_source/tuning_rr/bonding/bonding.h \
+  include/net/addrconf.h \
+  /home/bonding_source/original_source/bonding/bonding.h \
   include/linux/proc_fs.h \
     $(wildcard include/config/proc/devicetree.h) \
     $(wildcard include/config/proc/kcore.h) \
-  /home/bonding_source/tuning_rr/bonding/bond_3ad.h \
-  /home/bonding_source/tuning_rr/bonding/bond_alb.h \
+  include/linux/if_bonding.h \
+  /home/bonding_source/original_source/bonding/bond_3ad.h \
+  /home/bonding_source/original_source/bonding/bond_alb.h \
 
-/home/bonding_source/tuning_rr/bonding/bond_alb.o: $(deps_/home/bonding_source/tuning_rr/bonding/bond_alb.o)
+/home/bonding_source/original_source/bonding/bond_ipv6.o: $(deps_/home/bonding_source/original_source/bonding/bond_ipv6.o)
 
-$(deps_/home/bonding_source/tuning_rr/bonding/bond_alb.o):
+$(deps_/home/bonding_source/original_source/bonding/bond_ipv6.o):

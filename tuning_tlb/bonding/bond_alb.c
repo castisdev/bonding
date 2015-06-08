@@ -41,9 +41,7 @@
 #include "bonding.h"
 #include "bond_alb.h"
 
-#define	ALB_LOAD_GAP				800000
-int xmit_cnt = 1;
-
+#define ALB_LOAD_GAP			800000
 #define ALB_TIMER_TICKS_PER_SEC	    10	/* should be a divisor of HZ */
 #define BOND_TLB_REBALANCE_INTERVAL 10	/* In seconds, periodic re-balancing.
 					 * Used for division - never set
@@ -142,13 +140,9 @@ static inline void _unlock_tx_hashtbl(struct bonding *bond)
 static inline void tlb_init_table_entry(struct tlb_client_info *entry, int save_load)
 {
 	if (save_load) {
-		if(save_load == 1)
-		{
-			entry->load_history = 1 + entry->tx_bytes /
+		entry->load_history = 1 + entry->tx_bytes /
 				      BOND_TLB_REBALANCE_INTERVAL;
-			printk("[tlb_init_table_entry]entry->load_history = %d  ++++++++++++++++++\n", entry->load_history);
-			entry->tx_bytes = 0;
-		}
+		entry->tx_bytes = 0;
 	}
 
 	entry->tx_slave = NULL;
@@ -167,34 +161,24 @@ static void tlb_clear_slave(struct bonding *bond, struct slave *slave, int save_
 {
 	struct tlb_client_info *tx_hash_table;
 	u32 index;
-	printk("[Bond_alb.c::tlb_clear_slave()]tlb_clear_slave() Start point!!!\n");
-		
+
 	_lock_tx_hashtbl(bond);
-	
-	printk("save_load = %d\n", save_load);
 
 	/* clear slave from tx_hashtbl */
 	tx_hash_table = BOND_ALB_INFO(bond).tx_hashtbl;
 
 	/* skip this if we've already freed the tx hash table */
 	if (tx_hash_table) {
-		printk("tx_hash_table is not empty!!\n");
 		index = SLAVE_TLB_INFO(slave).head;
 		while (index != TLB_NULL_INDEX) {
-			u32 next_index = tx_hash_table[index].next;	
-			printk("[!!!------->!!!!tlb_clear_slave]!!! index = %d\n", index);
-			printk("[***------->****tlb_clear_slave]*** tx_hash_table[index].tx_bytes = %d\n",tx_hash_table[index].tx_bytes);
-			printk("[***tlb_clear_slave]tx_hash_table[index].load_history = %d\n",tx_hash_table[index].load_history);
+			u32 next_index = tx_hash_table[index].next;
 			tlb_init_table_entry(&tx_hash_table[index], save_load);
 			index = next_index;
 		}
 	}
 
 	tlb_init_slave(slave);
-	
-	printk("tlb_clear_slave() Done!!\n");
-	
-		
+
 	_unlock_tx_hashtbl(bond);
 }
 
@@ -283,30 +267,19 @@ static struct slave *tlb_choose_channel(struct bonding *bond, u32 hash_index, u3
 	struct alb_bond_info *bond_info = &(BOND_ALB_INFO(bond));
 	struct tlb_client_info *hash_table;
 	struct slave *assigned_slave;
-	u64		curr_tx_bytes;
+
 	_lock_tx_hashtbl(bond);
-
-
-	printk("[Bond_alb.c::tlb_choose_channel]tlb_choose_channel() Start!!!\n");
-	printk("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n");
-	printk("hash_index = %d\n", hash_index);
-	printk("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n");
-
 
 	hash_table = bond_info->tx_hashtbl;
 	assigned_slave = hash_table[hash_index].tx_slave;
-
 	if (!assigned_slave) {
-
 		assigned_slave = tlb_get_least_loaded_slave(bond);
-
-		printk("assigned slave select!!!!\n");
 
 		if (assigned_slave) {
 			struct tlb_slave_info *slave_info =
 				&(SLAVE_TLB_INFO(assigned_slave));
 			u32 next_index = slave_info->head;
-			printk("hash_table init!!!\n");
+
 			hash_table[hash_index].tx_slave = assigned_slave;
 			hash_table[hash_index].next = next_index;
 			hash_table[hash_index].prev = TLB_NULL_INDEX;
@@ -315,49 +288,14 @@ static struct slave *tlb_choose_channel(struct bonding *bond, u32 hash_index, u3
 				hash_table[next_index].prev = hash_index;
 			}
 
-			printk("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n");
-			printk("In assigned slave, hash_index = %d\n", hash_index);
-			printk("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n");
-
-
-
 			slave_info->head = hash_index;
 			slave_info->load +=
 				hash_table[hash_index].load_history;
-			printk("slave_info->head = %d\n", slave_info->head);
-			printk("slave_info->load = %d\n", slave_info->load);
 		}
 	}
 
-	{
-		int i;
-		u32 slave_curr_load_val = 0, slave2_load_val = 0, sub_load_val = 0;
-		struct slave *slave;
-
-		bond_for_each_slave(bond, slave, i){
-			if(slave == bond->curr_active_slave){
-				slave_curr_load_val = slave->tlb_info.load;
-				printk("[Bond_alb.c::tlb_choose_channel]slave_curr_slave_info.head = %d\n", slave->tlb_info.head);
-				printk("[Bond_alb.c::tlb_choose_channel]slave_curr_load_val = %d\n", slave_curr_load_val);
-				printk("]]Slave_curr[[hash_NUM = %d\n", hash_index);
-				curr_tx_bytes = hash_table[hash_index].tx_bytes;
-	//			printk(KERN_INFO "curr_tx_bytes = %ll\n\n", curr_tx_bytes);
-			}
-			else{
-				slave2_load_val= slave->tlb_info.load;
-				printk("[Bond_alb.c::tlb_choose_channel]slave_curr_slave_info.head = %d\n", slave->tlb_info.head);
-				printk("[Bond_alb.c::tlb_choose_channel]slave2_load_val = %d\n", slave2_load_val);
-			}
-		}
-
-		sub_load_val = (slave_curr_load_val < slave2_load_val) ? (slave2_load_val - slave_curr_load_val):(slave_curr_load_val - slave2_load_val);
-		printk("[Bond_alb.c::tlb_choose_channel] sub_load_val = %d\n",sub_load_val);
-
-	}
-
-		if (assigned_slave) {
+	if (assigned_slave) {
 		hash_table[hash_index].tx_bytes += skb_len;
-		printk(KERN_INFO "hash_table[index].tx_bytes = %d\n", hash_table[hash_index].tx_bytes);
 	}
 
 	_unlock_tx_hashtbl(bond);
@@ -996,7 +934,7 @@ static void alb_send_learning_packets(struct slave *slave, u8 mac_addr[])
 				continue;
 			}
 		}
-		
+
 		dev_queue_xmit(skb);
 	}
 }
@@ -1354,9 +1292,6 @@ void bond_alb_deinitialize(struct bonding *bond)
 
 int bond_alb_xmit(struct sk_buff *skb, struct net_device *bond_dev)
 {
-	//  *** TLB Mode  ***
-
-
 	struct bonding *bond = bond_dev->priv;
 	struct ethhdr *eth_data;
 	struct alb_bond_info *bond_info = &(BOND_ALB_INFO(bond));
@@ -1368,16 +1303,7 @@ int bond_alb_xmit(struct sk_buff *skb, struct net_device *bond_dev)
 	const u8 *hash_start = NULL;
 	int res = 1;
 	struct ipv6hdr *ip6hdr;
-	
-	
-	struct slave *start_at;	
 
-
-
-
-
-	//*** print xmit packet ***///
-	printk("[Bond_alb.c::bond_alb_xmit()]called bond_alb_xmit\n");
 	/*
 	 * If we risk deadlock from transmitting this in the
 	 * netpoll path, tell netpoll to queue the frame for later
@@ -1410,7 +1336,6 @@ int bond_alb_xmit(struct sk_buff *skb, struct net_device *bond_dev)
 			do_tx_balance = 0;
 			break;
 		}
-		
 		hash_start = (char *)&(iph->daddr);
 		hash_size = sizeof(iph->daddr);
 	}
@@ -1476,21 +1401,17 @@ int bond_alb_xmit(struct sk_buff *skb, struct net_device *bond_dev)
 	}
 
 	if (do_tx_balance) {
-		printk("do_tx_balance is true!!\n");
 		hash_index = _simple_hash(hash_start, hash_size);
 		tx_slave = tlb_choose_channel(bond, hash_index, skb->len);
 	}
 
 	if (!tx_slave) {
-		printk("tx_slave is empty\n");
 		/* unbalanced or unassigned, send through primary */
 		tx_slave = bond->curr_active_slave;
 		bond_info->unbalanced_load += skb->len;
-		printk("unbalance_load = %d\n", bond_info->unbalanced_load);
 	}
 
 	if (tx_slave && SLAVE_IS_OK(tx_slave)) {
-		printk("tx_slave && SLAVE_IS_OK***\n");
 		if (tx_slave != bond->curr_active_slave) {
 			memcpy(eth_data->h_source,
 			       tx_slave->dev->dev_addr,
@@ -1504,15 +1425,11 @@ int bond_alb_xmit(struct sk_buff *skb, struct net_device *bond_dev)
 		}
 	}
 
-				   
-
 out:
 	if (res) {
 		/* no suitable interface, frame not sent */
 		dev_kfree_skb(skb);
 	}
-	xmit_cnt += 1;
-	printk(KERN_INFO "xmit_cnt ===> %d\n\n\n", xmit_cnt);
 	read_unlock(&bond->curr_slave_lock);
 	read_unlock(&bond->lock);
 	return 0;
@@ -1520,7 +1437,6 @@ out:
 
 void bond_alb_monitor(void *work_data)
 {
-	static int monitor_cycle = 1;
 	struct bonding *bond = work_data;
 	struct alb_bond_info *bond_info = &(BOND_ALB_INFO(bond));
 	struct slave *slave;
@@ -1528,9 +1444,7 @@ void bond_alb_monitor(void *work_data)
 	u32 slave_curr_load_val = 0, slave2_load_val = 0, sub_load_val = 0;
 
 	read_lock(&bond->lock);
-	
-//	printk(KERN_INFO "ALB_LOAD_GAP == 800000\n\n");
-	printk(KERN_INFO "Monitor !!! Start!!\nMonitor_cycle = %d\n", monitor_cycle++);
+
 	if (bond->kill_timers) {
 		goto out;
 	}
@@ -1552,6 +1466,7 @@ void bond_alb_monitor(void *work_data)
 		 * read.
 		 */
 		read_lock(&bond->curr_slave_lock);
+
 		bond_for_each_slave(bond, slave, i) {
 			alb_send_learning_packets(slave, slave->dev->dev_addr);
 		}
@@ -1561,24 +1476,9 @@ void bond_alb_monitor(void *work_data)
 		bond_info->lp_counter = 0;
 	}
 
-
-		bond_for_each_slave(bond, slave, i){
-			if(slave == bond->curr_active_slave){
-				slave_curr_load_val = slave->tlb_info.load;
-			}
-			else{
-				slave2_load_val= slave->tlb_info.load;
-			}
-		}
-
-		sub_load_val = (slave_curr_load_val < slave2_load_val) ? 
-			(slave2_load_val - slave_curr_load_val):(slave_curr_load_val - slave2_load_val);
-
-
-
 	/* rebalance tx traffic */
-	if (bond_info->tx_rebalance_counter >= BOND_TLB_REBALANCE_TICKS ) {
-		printk(KERN_INFO "BODN_TLB_REBALANCEING Time!!!!!!!!!\n");
+	if (bond_info->tx_rebalance_counter >= BOND_TLB_REBALANCE_TICKS) {
+
 		read_lock(&bond->curr_slave_lock);
 
 		bond_for_each_slave(bond, slave, i) {
@@ -1586,23 +1486,35 @@ void bond_alb_monitor(void *work_data)
 			if (slave == bond->curr_active_slave) {
 				SLAVE_TLB_INFO(slave).load =
 					bond_info->unbalanced_load /
-					BOND_TLB_REBALANCE_INTERVAL;
+						BOND_TLB_REBALANCE_INTERVAL;
 				bond_info->unbalanced_load = 0;
 			}
 		}
-		xmit_cnt = 0;
-		monitor_cycle = 1;
+
 		read_unlock(&bond->curr_slave_lock);
 
 		bond_info->tx_rebalance_counter = 0;
 	}
 
-////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	if(sub_load_val > ALB_LOAD_GAP){	
+	bond_for_each_slave(bond, slave, i){
+		if(slave == bond->curr_active_slave){
+			slave_curr_load_val = slave->tlb_info.load;
+		}
+		else{
+			slave2_load_val= slave->tlb_info.load;
+		}
+	}
+
+	sub_load_val = (slave_curr_load_val < slave2_load_val) ?
+		(slave2_load_val - slave_curr_load_val):(slave_curr_load_val - slave2_load_val);
+
+
+	if(sub_load_val > ALB_LOAD_GAP){
 		printk(KERN_INFO "]SUB_LOAD_VAL > ALB_LOAD_GAP[\n\n");
 		read_lock(&bond->curr_slave_lock);
-	
+
 		bond_for_each_slave(bond, slave, i) {
 			tlb_clear_slave(bond, slave, 3);
 			if (slave == bond->curr_active_slave) {
@@ -1612,12 +1524,11 @@ void bond_alb_monitor(void *work_data)
 				bond_info->unbalanced_load = 0;
 			}
 		}
-		xmit_cnt = 0;
-		monitor_cycle = 1;
 		read_unlock(&bond->curr_slave_lock);
 
-	}	
-////////////////////////////////////////////////////////////////////////////////////
+	}      
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	/* handle rlb stuff */
 	if (bond_info->rlb_enabled) {

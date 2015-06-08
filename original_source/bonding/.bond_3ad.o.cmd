@@ -1,7 +1,7 @@
-cmd_/home/bonding_source/tuning_rr/bonding/bond_alb.o := gcc -m32 -Wp,-MD,/home/bonding_source/tuning_rr/bonding/.bond_alb.o.d  -nostdinc -isystem /usr/lib/gcc/i386-redhat-linux/4.1.2/include -D__KERNEL__ -Iinclude  -include include/linux/autoconf.h  -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs -fno-strict-aliasing -fno-common -Wstrict-prototypes -Wundef -Werror-implicit-function-declaration -fno-delete-null-pointer-checks -fwrapv -Os -pipe -msoft-float -fno-builtin-sprintf -fno-builtin-log2 -fno-builtin-puts  -mpreferred-stack-boundary=2  -march=i686 -mtune=generic -mtune=generic -mregparm=3 -ffreestanding -Iinclude/asm-i386/mach-generic -Iinclude/asm-i386/mach-default -fomit-frame-pointer -g  -fno-stack-protector -Wdeclaration-after-statement -Wno-pointer-sign   -DMODULE -D"KBUILD_STR(s)=\#s" -D"KBUILD_BASENAME=KBUILD_STR(bond_alb)"  -D"KBUILD_MODNAME=KBUILD_STR(bonding)" -c -o /home/bonding_source/tuning_rr/bonding/.tmp_bond_alb.o /home/bonding_source/tuning_rr/bonding/bond_alb.c
+cmd_/home/bonding_source/original_source/bonding/bond_3ad.o := gcc -m32 -Wp,-MD,/home/bonding_source/original_source/bonding/.bond_3ad.o.d  -nostdinc -isystem /usr/lib/gcc/i386-redhat-linux/4.1.2/include -D__KERNEL__ -Iinclude  -include include/linux/autoconf.h  -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs -fno-strict-aliasing -fno-common -Wstrict-prototypes -Wundef -Werror-implicit-function-declaration -fno-delete-null-pointer-checks -fwrapv -Os -pipe -msoft-float -fno-builtin-sprintf -fno-builtin-log2 -fno-builtin-puts  -mpreferred-stack-boundary=2  -march=i686 -mtune=generic -mtune=generic -mregparm=3 -ffreestanding -Iinclude/asm-i386/mach-generic -Iinclude/asm-i386/mach-default -fomit-frame-pointer -g  -fno-stack-protector -Wdeclaration-after-statement -Wno-pointer-sign   -DMODULE -D"KBUILD_STR(s)=\#s" -D"KBUILD_BASENAME=KBUILD_STR(bond_3ad)"  -D"KBUILD_MODNAME=KBUILD_STR(bonding)" -c -o /home/bonding_source/original_source/bonding/.tmp_bond_3ad.o /home/bonding_source/original_source/bonding/bond_3ad.c
 
-deps_/home/bonding_source/tuning_rr/bonding/bond_alb.o := \
-  /home/bonding_source/tuning_rr/bonding/bond_alb.c \
+deps_/home/bonding_source/original_source/bonding/bond_3ad.o := \
+  /home/bonding_source/original_source/bonding/bond_3ad.c \
   include/linux/skbuff.h \
     $(wildcard include/config/netfilter.h) \
     $(wildcard include/config/bridge/netfilter.h) \
@@ -461,6 +461,7 @@ deps_/home/bonding_source/tuning_rr/bonding/bond_alb.o := \
   include/asm-generic/iomap.h \
   include/linux/vmalloc.h \
   include/asm/scatterlist.h \
+  include/linux/if_ether.h \
   include/linux/netdevice.h \
     $(wildcard include/config/ax25.h) \
     $(wildcard include/config/ax25/module.h) \
@@ -476,73 +477,17 @@ deps_/home/bonding_source/tuning_rr/bonding/bond_alb.o := \
   include/linux/socket.h \
   include/linux/sockios.h \
   include/linux/hdlc/ioctl.h \
-  include/linux/if_ether.h \
   include/linux/if_packet.h \
-  include/linux/etherdevice.h \
-  include/linux/random.h \
-    $(wildcard include/config/arch/random.h) \
-  include/asm/archrandom.h \
-  include/linux/pkt_sched.h \
-  include/linux/ip.h \
-  include/linux/ipv6.h \
-    $(wildcard include/config/ipv6/privacy.h) \
-    $(wildcard include/config/ipv6/router/pref.h) \
-    $(wildcard include/config/ipv6/route/info.h) \
-    $(wildcard include/config/ipv6/subtrees.h) \
-  include/linux/icmpv6.h \
-  include/linux/tcp.h \
-  include/net/sock.h \
-    $(wildcard include/config/security/network.h) \
-    $(wildcard include/config/netdebug.h) \
-    $(wildcard include/config/net.h) \
-  include/linux/security.h \
-    $(wildcard include/config/security/network/xfrm.h) \
-  include/linux/binfmts.h \
-  include/linux/shm.h \
-  include/asm/shmparam.h \
-  include/asm/shmbuf.h \
-  include/linux/msg.h \
-  include/asm/msgbuf.h \
-  include/linux/key.h \
-  include/linux/xfrm.h \
-  include/net/flow.h \
-  include/linux/filter.h \
-  include/net/dst.h \
-    $(wildcard include/config/net/cls/route.h) \
-    $(wildcard include/config/xfrm.h) \
-  include/linux/rtnetlink.h \
-  include/linux/netlink.h \
-  include/linux/if_addr.h \
-  include/net/neighbour.h \
-  include/linux/seq_file.h \
-  include/net/inet_connection_sock.h \
-  include/net/inet_sock.h \
-  include/net/request_sock.h \
-  include/net/inet_timewait_sock.h \
-  include/net/tcp_states.h \
-  include/net/timewait_sock.h \
-  include/linux/udp.h \
-  include/net/if_inet6.h \
-  include/net/snmp.h \
-  include/linux/snmp.h \
-  include/linux/if_arp.h \
+  include/linux/ethtool.h \
   include/linux/if_bonding.h \
-  include/linux/if_vlan.h \
-  include/linux/in.h \
-  include/net/ipx.h \
-    $(wildcard include/config/ipx/intern.h) \
-  include/net/datalink.h \
-  include/linux/ipx.h \
-  include/net/arp.h \
-  include/net/ipv6.h \
-  include/net/ndisc.h \
-  /home/bonding_source/tuning_rr/bonding/bonding.h \
+  include/linux/pkt_sched.h \
+  /home/bonding_source/original_source/bonding/bonding.h \
   include/linux/proc_fs.h \
     $(wildcard include/config/proc/devicetree.h) \
     $(wildcard include/config/proc/kcore.h) \
-  /home/bonding_source/tuning_rr/bonding/bond_3ad.h \
-  /home/bonding_source/tuning_rr/bonding/bond_alb.h \
+  /home/bonding_source/original_source/bonding/bond_3ad.h \
+  /home/bonding_source/original_source/bonding/bond_alb.h \
 
-/home/bonding_source/tuning_rr/bonding/bond_alb.o: $(deps_/home/bonding_source/tuning_rr/bonding/bond_alb.o)
+/home/bonding_source/original_source/bonding/bond_3ad.o: $(deps_/home/bonding_source/original_source/bonding/bond_3ad.o)
 
-$(deps_/home/bonding_source/tuning_rr/bonding/bond_alb.o):
+$(deps_/home/bonding_source/original_source/bonding/bond_3ad.o):

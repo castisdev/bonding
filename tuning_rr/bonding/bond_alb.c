@@ -1371,7 +1371,7 @@ int bond_alb_xmit(struct sk_buff *skb, struct net_device *bond_dev)
 	
 	struct slave *start_at;	
 	int i, slave_no;
-
+	struct iphdr *iph = ip_hdr(skb);
 
 
 

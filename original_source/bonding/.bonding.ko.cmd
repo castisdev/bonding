@@ -1,0 +1,1 @@
+cmd_/home/bonding_source/original_source/bonding/bonding.ko := ld -m elf_i386 -m elf_i386 -r -o /home/bonding_source/original_source/bonding/bonding.ko /home/bonding_source/original_source/bonding/bonding.o /home/bonding_source/original_source/bonding/bonding.mod.o
