@@ -17,4 +17,5 @@ clean:
 	rm -rf *.ko
 	rm -rf *.o
 	rm -rf *.mod.*
-
+	rm -rf module.*
+	rm -rf modules.*
