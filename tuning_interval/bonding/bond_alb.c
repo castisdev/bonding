@@ -41,8 +41,6 @@
 #include "bonding.h"
 #include "bond_alb.h"
 
-#define	ALB_LOAD_GAP				800000
-int xmit_cnt = 1;
 
 #define ALB_TIMER_TICKS_PER_SEC	    10	/* should be a divisor of HZ */
 #define BOND_TLB_REBALANCE_INTERVAL 10	/* In seconds, periodic re-balancing.
@@ -142,13 +140,8 @@ static inline void _unlock_tx_hashtbl(struct bonding *bond)
 static inline void tlb_init_table_entry(struct tlb_client_info *entry, int save_load)
 {
 	if (save_load) {
-		if(save_load == 1)
-		{
-			entry->load_history = 1 + entry->tx_bytes /
-				      BOND_TLB_REBALANCE_INTERVAL;
-			printk("[tlb_init_table_entry]entry->load_history = %d  ++++++++++++++++++\n", entry->load_history);
-			entry->tx_bytes = 0;
-		}
+		entry->load_history = 1 + entry->tx_bytes * 10;
+		entry->tx_bytes = 0;
 	}
 
 	entry->tx_slave = NULL;
@@ -167,34 +160,24 @@ static void tlb_clear_slave(struct bonding *bond, struct slave *slave, int save_
 {
 	struct tlb_client_info *tx_hash_table;
 	u32 index;
-	printk("[Bond_alb.c::tlb_clear_slave()]tlb_clear_slave() Start point!!!\n");
-		
+
 	_lock_tx_hashtbl(bond);
-	
-	printk("save_load = %d\n", save_load);
 
 	/* clear slave from tx_hashtbl */
 	tx_hash_table = BOND_ALB_INFO(bond).tx_hashtbl;
 
 	/* skip this if we've already freed the tx hash table */
 	if (tx_hash_table) {
-		printk("tx_hash_table is not empty!!\n");
 		index = SLAVE_TLB_INFO(slave).head;
 		while (index != TLB_NULL_INDEX) {
-			u32 next_index = tx_hash_table[index].next;	
-			printk("[!!!------->!!!!tlb_clear_slave]!!! index = %d\n", index);
-			printk("[***------->****tlb_clear_slave]*** tx_hash_table[index].tx_bytes = %d\n",tx_hash_table[index].tx_bytes);
-			printk("[***tlb_clear_slave]tx_hash_table[index].load_history = %d\n",tx_hash_table[index].load_history);
+			u32 next_index = tx_hash_table[index].next;
 			tlb_init_table_entry(&tx_hash_table[index], save_load);
 			index = next_index;
 		}
 	}
 
 	tlb_init_slave(slave);
-	
-	printk("tlb_clear_slave() Done!!\n");
-	
-		
+
 	_unlock_tx_hashtbl(bond);
 }
 
@@ -277,30 +260,25 @@ static struct slave *tlb_get_least_loaded_slave(struct bonding *bond)
 	return least_loaded;
 }
 
-/* Caller must hold bond lock for read*/
+/* Caller must hold bond lock for read */
 static struct slave *tlb_choose_channel(struct bonding *bond, u32 hash_index, u32 skb_len)
 {
 	struct alb_bond_info *bond_info = &(BOND_ALB_INFO(bond));
 	struct tlb_client_info *hash_table;
 	struct slave *assigned_slave;
-	
+
 	_lock_tx_hashtbl(bond);
-
-
-
 
 	hash_table = bond_info->tx_hashtbl;
 	assigned_slave = hash_table[hash_index].tx_slave;
-
 	if (!assigned_slave) {
-
 		assigned_slave = tlb_get_least_loaded_slave(bond);
-
 
 		if (assigned_slave) {
 			struct tlb_slave_info *slave_info =
 				&(SLAVE_TLB_INFO(assigned_slave));
 			u32 next_index = slave_info->head;
+
 			hash_table[hash_index].tx_slave = assigned_slave;
 			hash_table[hash_index].next = next_index;
 			hash_table[hash_index].prev = TLB_NULL_INDEX;
@@ -309,17 +287,13 @@ static struct slave *tlb_choose_channel(struct bonding *bond, u32 hash_index, u3
 				hash_table[next_index].prev = hash_index;
 			}
 
-
-
-
 			slave_info->head = hash_index;
 			slave_info->load +=
 				hash_table[hash_index].load_history;
 		}
 	}
 
-
-		if (assigned_slave) {
+	if (assigned_slave) {
 		hash_table[hash_index].tx_bytes += skb_len;
 	}
 
@@ -959,7 +933,7 @@ static void alb_send_learning_packets(struct slave *slave, u8 mac_addr[])
 				continue;
 			}
 		}
-		
+
 		dev_queue_xmit(skb);
 	}
 }
@@ -1317,29 +1291,18 @@ void bond_alb_deinitialize(struct bonding *bond)
 
 int bond_alb_xmit(struct sk_buff *skb, struct net_device *bond_dev)
 {
-	// ***  TLB mode modified Round Robin transmit  ***
-
 	struct bonding *bond = bond_dev->priv;
 	struct ethhdr *eth_data;
 	struct alb_bond_info *bond_info = &(BOND_ALB_INFO(bond));
 	struct slave *tx_slave = NULL;
 	static __be32 ip_bcast;
-//	int hash_size = 0;
-//	int do_tx_balance = 1;
-//	u32 hash_index = 0;
-//	const u8 *hash_start = NULL;
+	int hash_size = 0;
+	int do_tx_balance = 1;
+	u32 hash_index = 0;
+	const u8 *hash_start = NULL;
 	int res = 1;
-//	struct ipv6hdr *ip6hdr;
-	
-	
-	struct slave *start_at;	
-	int i, slave_no;
-	struct iphdr *iph = ip_hdr(skb);
+	struct ipv6hdr *ip6hdr;
 
-printk("alb_xmit Start!!!\n");
-
-
-	//*** print xmit packet ***///
 	/*
 	 * If we risk deadlock from transmitting this in the
 	 * netpoll path, tell netpoll to queue the frame for later
@@ -1362,39 +1325,104 @@ printk("alb_xmit Start!!!\n");
 		goto out;
 	}
 
-	if((iph->protocol == IPPROTO_IGMP) &&
-			(skb->protocol == htons(ETH_P_IP))){
+	switch (ntohs(skb->protocol)) {
+	case ETH_P_IP: {
+		const struct iphdr *iph = ip_hdr(skb);
 
-		tx_slave = bond->curr_active_slave;
-
-		if(!tx_slave)
-			goto out;
-	} else{
-
-		slave_no = bond->rr_tx_counter++ % bond->slave_cnt;		
-
-
-		bond_for_each_slave(bond, tx_slave, i){
-			slave_no--;
-			if (slave_no < 0){
-
-				break;
-			}
-		}
-	}
-
-	start_at = tx_slave;
-	
-	bond_for_each_slave_from(bond, tx_slave, i, start_at) {
-		if (IS_UP(tx_slave->dev) &&
-				(tx_slave->link == BOND_LINK_UP) &&
-				(tx_slave->state == BOND_STATE_ACTIVE)) {
-			res = bond_dev_queue_xmit(bond, skb, tx_slave->dev);
+		if ((memcmp(eth_data->h_dest, mac_bcast, ETH_ALEN) == 0) ||
+		    (iph->daddr == ip_bcast) ||
+		    (iph->protocol == IPPROTO_IGMP)) {
+			do_tx_balance = 0;
 			break;
 		}
+		hash_start = (char *)&(iph->daddr);
+		hash_size = sizeof(iph->daddr);
+	}
+		break;
+	case ETH_P_IPV6:
+		/* IPv6 doesn't really use broadcast mac address, but leave
+		 * that here just in case.
+		 */
+		if (memcmp(eth_data->h_dest, mac_bcast, ETH_ALEN) == 0) {
+			do_tx_balance = 0;
+			break;
+		}
+
+		/* IPv6 uses all-nodes multicast as an equivalent to
+		 * broadcasts in IPv4.
+		 */
+		if (memcmp(eth_data->h_dest, mac_v6_allmcast, ETH_ALEN) == 0) {
+			do_tx_balance = 0;
+			break;
+		}
+
+		/* Additianally, DAD probes should not be tx-balanced as that
+		 * will lead to false positives for duplicate addresses and
+		 * prevent address configuration from working.
+		 */
+		ip6hdr = ipv6_hdr(skb);
+		if (ipv6_addr_any(&ip6hdr->saddr)) {
+			do_tx_balance = 0;
+			break;
+		}
+
+		hash_start = (char *)&(ipv6_hdr(skb)->daddr);
+		hash_size = sizeof(ipv6_hdr(skb)->daddr);
+		break;
+	case ETH_P_IPX:
+		if (ipx_hdr(skb)->ipx_checksum != IPX_NO_CHECKSUM) {
+			/* something is wrong with this packet */
+			do_tx_balance = 0;
+			break;
+		}
+
+		if (ipx_hdr(skb)->ipx_type != IPX_TYPE_NCP) {
+			/* The only protocol worth balancing in
+			 * this family since it has an "ARP" like
+			 * mechanism
+			 */
+			do_tx_balance = 0;
+			break;
+		}
+
+		hash_start = (char*)eth_data->h_dest;
+		hash_size = ETH_ALEN;
+		break;
+	case ETH_P_ARP:
+		do_tx_balance = 0;
+		if (bond_info->rlb_enabled) {
+			tx_slave = rlb_arp_xmit(skb, bond);
+		}
+		break;
+	default:
+		do_tx_balance = 0;
+		break;
 	}
 
-				   
+	if (do_tx_balance) {
+		hash_index = _simple_hash(hash_start, hash_size);
+		tx_slave = tlb_choose_channel(bond, hash_index, skb->len);
+	}
+
+	if (!tx_slave) {
+		/* unbalanced or unassigned, send through primary */
+		tx_slave = bond->curr_active_slave;
+		bond_info->unbalanced_load += skb->len;
+	}
+
+	if (tx_slave && SLAVE_IS_OK(tx_slave)) {
+		if (tx_slave != bond->curr_active_slave) {
+			memcpy(eth_data->h_source,
+			       tx_slave->dev->dev_addr,
+			       ETH_ALEN);
+		}
+
+		res = bond_dev_queue_xmit(bond, skb, tx_slave->dev);
+	} else {
+		if (tx_slave) {
+			tlb_clear_slave(bond, tx_slave, 0);
+		}
+	}
 
 out:
 	if (res) {
@@ -1412,10 +1440,9 @@ void bond_alb_monitor(void *work_data)
 	struct alb_bond_info *bond_info = &(BOND_ALB_INFO(bond));
 	struct slave *slave;
 	int i;
-	u32 slave_curr_load_val = 0, slave2_load_val = 0, sub_load_val = 0;
 
 	read_lock(&bond->lock);
-	
+
 	if (bond->kill_timers) {
 		goto out;
 	}
@@ -1437,6 +1464,7 @@ void bond_alb_monitor(void *work_data)
 		 * read.
 		 */
 		read_lock(&bond->curr_slave_lock);
+
 		bond_for_each_slave(bond, slave, i) {
 			alb_send_learning_packets(slave, slave->dev->dev_addr);
 		}
@@ -1446,35 +1474,20 @@ void bond_alb_monitor(void *work_data)
 		bond_info->lp_counter = 0;
 	}
 
-
-		bond_for_each_slave(bond, slave, i){
-			if(slave == bond->curr_active_slave){
-				slave_curr_load_val = slave->tlb_info.load;
-			}
-			else{
-				slave2_load_val= slave->tlb_info.load;
-			}
-		}
-
-		sub_load_val = (slave_curr_load_val < slave2_load_val) ? 
-			(slave2_load_val - slave_curr_load_val):(slave_curr_load_val - slave2_load_val);
-
-
-
 	/* rebalance tx traffic */
-	if (bond_info->tx_rebalance_counter >= BOND_TLB_REBALANCE_TICKS ) {
-		printk(KERN_INFO "BODN_TLB_REBALANCEING Time!!!!!!!!!\n");
+	if (bond_info->tx_rebalance_counter >= BOND_TLB_REBALANCE_TICKS) {
+
 		read_lock(&bond->curr_slave_lock);
 
 		bond_for_each_slave(bond, slave, i) {
 			tlb_clear_slave(bond, slave, 1);
 			if (slave == bond->curr_active_slave) {
 				SLAVE_TLB_INFO(slave).load =
-					bond_info->unbalanced_load /
-					BOND_TLB_REBALANCE_INTERVAL;
+					bond_info->unbalanced_load * 10;
 				bond_info->unbalanced_load = 0;
 			}
 		}
+
 		read_unlock(&bond->curr_slave_lock);
 
 		bond_info->tx_rebalance_counter = 0;
